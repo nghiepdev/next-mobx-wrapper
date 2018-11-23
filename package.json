@@ -1,8 +1,33 @@
 {
   "name": "next-mobx-wrapper",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Mobx wrapper for Next.js",
+  "keywords": [
+    "react",
+    "nextjs",
+    "mobx"
+  ],
   "main": "lib/index.js",
+  "scripts": {
+    "clean": "rimraf lib",
+    "babel": "babel src --out-dir lib --source-maps",
+    "build": "npm run clean && npm run babel",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.6",
+    "next": "^7.0.2",
+    "rimraf": "^2.6.2"
+  },
+  "peerDependencies": {
+    "@babel/plugin-proposal-class-properties": ">=7.1.0",
+    "@babel/plugin-proposal-decorators": ">=7.1.0",
+    "mobx": ">=4.0.0",
+    "next": ">=6.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/nghiepit/next-mobx-wrapper.git"
