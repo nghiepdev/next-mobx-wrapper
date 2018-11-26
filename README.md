@@ -31,9 +31,11 @@ $ yarn add next-mobx-wrapper
 // pages/_app.js
 
 import ErrorPage from 'next/error';
-import {withMobx} from 'next-mobx-wrapper'; // *Here*
+import {withMobx} from 'next-mobx-wrapper';
 import {configure} from 'mobx';
 import {Provider, useStaticRendering} from 'mobx-react';
+
+import * as getStores from '../stores';
 
 const isServer = !process.browser;
 
@@ -69,7 +71,7 @@ class MyApp extends App {
   }
 }
 
-export default withMobx(MyApp); // *Here*
+export default withMobx(getStores)(MyApp);
 ```
 
 ### Step 2: Make stores
@@ -79,7 +81,7 @@ export default withMobx(MyApp); // *Here*
 ```js
 // stores/user.js
 
-import {BaseStore, getOrCreateStore} from 'next-mobx-wrapper'; // *Here*
+import {BaseStore, getOrCreateStore} from 'next-mobx-wrapper';
 import {observable, action, flow} from 'mobx';
 import fetch from 'fetch';
 
@@ -130,7 +132,7 @@ class User extends React.Component {
   static async getInitialProps({store: {userStore}, query}) {
     const {id} = query;
 
-    await userStore.fetchUser(id); // *Here*
+    await userStore.fetchUser(id);
 
     const user = userStore.getUserById(id);
 
@@ -179,7 +181,7 @@ class UserInfo extends React.Component {
 
 // Somewhere
 <SampleThing>
-    <UserInfo id={9}>
+  <UserInfo id={9}>
 </SampleThing>
 ```
 
