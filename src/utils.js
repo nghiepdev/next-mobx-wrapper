@@ -1,5 +1,9 @@
 export const isServer = !process.browser;
 
+// getCounterStore=> counterStore
+export const getKeyNameStore = fnName =>
+  fnName.replace(/^get(.)/, (match, p1) => p1.toLowerCase());
+
 export const mapToJson = map => {
   try {
     return JSON.stringify([...map]);

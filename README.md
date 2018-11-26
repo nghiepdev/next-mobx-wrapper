@@ -7,6 +7,8 @@
 
 :warning: This will work only with Next.js 6+ :warning:
 
+## Example: https://github.com/zeit/next.js/tree/canary/examples/with-mobx-wrapper
+
 ## Features
 
 - Simple API, easy steps to set up
@@ -23,82 +25,20 @@ $ yarn add next-mobx-wrapper
 
 ## Usage
 
-### Step 1: Injection multiple store
-
-Below, we have two stores: `commonStore`, `userStore`
-
-Create the `stores/with-mobx.js` file with the following minimal code:
-
-```js
-// stores/with-mobx.js
-
-import React from 'react';
-import {configure} from 'mobx';
-
-import {getCommonStore} from './common';
-import {getUserStore} from './user'; // *Here*
-
-configure({enforceActions: 'observed'});
-
-export default App => {
-  return class AppWithMobx extends React.Component {
-    static async getInitialProps(appContext) {
-      const commonStore = getCommonStore();
-      const userStore = getUserStore(); // *Here*
-
-      // *Here*
-      // Provide the store to getInitialProps of pages
-      appContext.ctx.store = {
-        commonStore,
-        userStore,
-      };
-
-      let appProps = {};
-      if (typeof App.getInitialProps === 'function') {
-        appProps = await App.getInitialProps.call(App, appContext);
-      }
-
-      return {
-        ...appProps,
-        initialMobxState: appContext.ctx.store,
-      };
-    }
-
-    constructor(props) {
-      super(props);
-      const {commonStore, userStore} = props.initialMobxState;
-
-      this.commonStore = getCommonStore(commonStore);
-      this.userStore = getUserStore(userStore); // *Here*
-    }
-
-    render() {
-      // And *Here*
-      return (
-        <App
-          {...this.props}
-          store={{
-            commonStore: this.commonStore,
-            userStore: this.userStore,
-          }}
-        />
-      );
-    }
-  };
-};
-```
-
-Wrap `HOC` to `_app.js`
+### Step 1: Wrap `withMobx HOC` to `_app.js`
 
 ```js
 // pages/_app.js
 
 import ErrorPage from 'next/error';
+import {withMobx} from 'next-mobx-wrapper'; // *Here*
+import {configure} from 'mobx';
 import {Provider, useStaticRendering} from 'mobx-react';
-import withMobxStore from '../stores/with-mobx'; // *Here*
 
 const isServer = !process.browser;
-useStaticRendering(isServer); // not `true` value
+
+configure({enforceActions: 'observed'});
+useStaticRendering(isServer); // NOT `true` value
 
 class MyApp extends App {
   static async getInitialProps({Component, ctx}) {
@@ -129,10 +69,12 @@ class MyApp extends App {
   }
 }
 
-export default withMobxStore(MyApp); // *Here*
+export default withMobx(MyApp); // *Here*
 ```
 
-### Step 2: Create `userStore` sample
+### Step 2: Make stores
+
+- Create `userStore` sample:
 
 ```js
 // stores/user.js
@@ -160,14 +102,26 @@ class Store extends BaseStore {
   };
 }
 
-// *Here*
 // Make sure the store’s unique name
+// AND getCounterStore, counterStore must be same formula
+// Example: getUserStore => userStore
+// Example: getProductStore => productStore
 export const getUserStore = getOrCreateStore('userStore', Store);
+```
+
+- Make the `rootStore`:
+
+```js
+// stores/index.js
+// Just only simple
+
+export {getCounterStore} from './counter';
+export {getUserStore} from './user';
 ```
 
 ### Step 3: Binding data
 
-Any page
+- Any pages
 
 ```js
 // pages/user.js
@@ -180,14 +134,14 @@ class User extends React.Component {
 
     const user = userStore.getUserById(id);
 
-    if (user) {
+    if (!user) {
       return {
-        user,
+        statusCode: 404,
       };
     }
 
     return {
-      statusCode: 404,
+      user,
     };
   }
 
@@ -203,7 +157,7 @@ class User extends React.Component {
 export default User;
 ```
 
-Or any component
+- Or any components
 
 ```js
 // components/UserInfo.jsx
@@ -232,7 +186,7 @@ class UserInfo extends React.Component {
 ## API
 
 ```js
-import {BaseStore, getOrCreateStore} from 'next-mobx-wrapper';
+import {withMobx, BaseStore, getOrCreateStore} from 'next-mobx-wrapper';
 ```
 
 ## License

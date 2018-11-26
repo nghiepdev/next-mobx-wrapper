@@ -1,3 +1,4 @@
+export {default as withMobx} from './with-mobx';
 import {isServer, mapToJson, jsonToMap} from './utils';
 
 const __NEXT_MOBX_STORE__ = new Map();
