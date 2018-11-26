@@ -93,16 +93,18 @@ Wrap `HOC` to `_app.js`
 ```js
 // pages/_app.js
 
+import ErrorPage from 'next/error';
 import {Provider, useStaticRendering} from 'mobx-react';
 import withMobxStore from '../stores/with-mobx'; // *Here*
 
-useStaticRendering(true);
+const isServer = !process.browser;
+useStaticRendering(isServer); // not `true` value
 
 class MyApp extends App {
   static async getInitialProps({Component, ctx}) {
     let pageProps = {};
 
-    if (Component.getInitialProps) {
+    if (typeof Component.getInitialProps === 'function') {
       pageProps = await Component.getInitialProps(ctx);
     }
 

@@ -1,6 +1,6 @@
 import {isServer, mapToJson, jsonToMap} from './utils';
 
-const __NEXT_MOBX_STORE__ = '__NEXT_MOBX_STORE__';
+const __NEXT_MOBX_STORE__ = new Map();
 
 export class BaseStore {
   constructor(props = {}) {
@@ -11,49 +11,28 @@ export class BaseStore {
   }
 }
 
-const makeInitializeStore = Store => {
-  let store = null;
-
-  return (initialState = {}) => {
-    if (isServer) {
-      return new Store(initialState);
-    }
-
-    if (store === null) {
-      store = new Store(initialState);
-    }
-
-    return store;
-  };
-};
-
 export const getOrCreateStore = (storeKeyName, Store) => initialState => {
   // Convert Map to JSON string for client
   if (initialState) {
-    try {
-      for (const itemState in initialState) {
-        try {
-          const dataMap = initialState[itemState];
-          if (dataMap.toJS() instanceof Map) {
-            initialState[itemState] = mapToJson(dataMap);
-          }
-        } catch (e) {}
-      }
-    } catch (e) {}
+    for (const itemState in initialState) {
+      try {
+        const dataMap = initialState[itemState];
+        if (dataMap.toJS() instanceof Map) {
+          initialState[itemState] = mapToJson(dataMap);
+        }
+      } catch (e) {}
+    }
   }
-
-  const initializeStore = makeInitializeStore(Store);
 
   // Always make a new store if server, otherwise state is shared between requests
   if (isServer) {
-    return initializeStore(initialState);
+    return new Store(initialState);
   }
-
-  window[__NEXT_MOBX_STORE__] = window[__NEXT_MOBX_STORE__] || {};
 
   // Create store if unavailable on the client and set it on the window object
-  if (!window[__NEXT_MOBX_STORE__][storeKeyName]) {
-    window[__NEXT_MOBX_STORE__][storeKeyName] = initializeStore(initialState);
+  if (!__NEXT_MOBX_STORE__.has(storeKeyName)) {
+    __NEXT_MOBX_STORE__.set(storeKeyName, new Store(initialState));
   }
-  return window[__NEXT_MOBX_STORE__][storeKeyName];
+
+  return __NEXT_MOBX_STORE__.get(storeKeyName);
 };
