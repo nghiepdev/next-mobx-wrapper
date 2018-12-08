@@ -7,7 +7,7 @@
 
 :warning: This will work only with Next.js 6+ :warning:
 
-## Example: https://github.com/zeit/next.js/tree/canary/examples/with-mobx-wrapper
+## Example: [next.js/tree/canary/examples/with-mobx-wrapper](https://github.com/nghiepit/next.js/tree/canary/examples/with-mobx-wrapper)
 
 ## Features
 
