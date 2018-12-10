@@ -10,6 +10,12 @@ export class BaseStore {
       this[prop] = jsonToMap(props[prop]);
     }
   }
+
+  update = (data = {}) => {
+    const prop = Object.keys(data);
+
+    this[prop] = data[prop];
+  };
 }
 
 export const getOrCreateStore = (storeKeyName, Store) => initialState => {
