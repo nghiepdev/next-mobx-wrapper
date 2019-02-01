@@ -1,6 +1,6 @@
 {
   "name": "next-mobx-wrapper",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Mobx wrapper for Next.js",
   "keywords": [
     "react",
