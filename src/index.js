@@ -12,9 +12,9 @@ export class BaseStore {
   }
 
   update = (data = {}) => {
-    const prop = Object.keys(data);
-
-    this[prop] = data[prop];
+    for (const prop in data) {
+      this[prop] = data[prop];
+    }
   };
 }
 

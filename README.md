@@ -7,17 +7,15 @@
 
 :warning: This will work only with Next.js 6+ :warning:
 
-## Example: [next.js/tree/canary/examples/with-mobx-wrapper](https://github.com/nghiepit/next.js/tree/canary/examples/with-mobx-wrapper)
+## Example: [examples/with-mobx-wrapper](https://github.com/nghiepit/next.js/tree/canary/examples/with-mobx-wrapper)
 
 ## Features
 
-- Simple API, easy steps to set up
+- Simple API for easy steps to set up
 - Multiple stores injection
 - Works fine with [Observable Maps](https://mobx.js.org/refguide/map.html)
 
 ## Installation
-
-To install the stable version you can use:
 
 ```sh
 $ yarn add next-mobx-wrapper
@@ -25,7 +23,7 @@ $ yarn add next-mobx-wrapper
 
 ## Usage
 
-### Step 1: Wrap `withMobx HOC` to `_app.js`
+### Step 1: Wrap `withMobx` HOC into `_app.js`
 
 ```js
 // pages/_app.js
@@ -74,7 +72,7 @@ class MyApp extends App {
 export default withMobx(getStores)(MyApp);
 ```
 
-### Step 2: Make stores
+### Step 2: Create the stores
 
 - Create `userStore` sample:
 
@@ -105,13 +103,13 @@ class Store extends BaseStore {
 }
 
 // Make sure the store’s unique name
-// AND getCounterStore, counterStore must be same formula
+// AND must be same formula
 // Example: getUserStore => userStore
 // Example: getProductStore => productStore
 export const getUserStore = getOrCreateStore('userStore', Store);
 ```
 
-- Make the `rootStore`:
+- Create the `rootStore`:
 
 ```js
 // stores/index.js
@@ -149,9 +147,6 @@ class User extends React.Component {
 
   render() {
     const {user} = this.props;
-
-    console.log(user);
-
     return <div>Username: {user.name}</div>;
   }
 }
@@ -170,11 +165,7 @@ import {inject, observer} from 'mobx-react';
   user: getUserById(props.id),
 }))
 class UserInfo extends React.Component {
-  static propTypes = {};
-
   render() {
-    console.log(this.props.user);
-
     return <div>Username: {this.props.user.name}</div>;
   }
 }
