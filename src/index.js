@@ -6,7 +6,7 @@ const __NEXT_MOBX_STORE__ = new Map();
 export class BaseStore {
   constructor(props = {}) {
     for (const prop in props) {
-      // Convert JSON string to Map string for client
+      // Convert JSON to Map
       this[prop] = jsonToMap(props[prop]);
     }
   }
@@ -19,11 +19,12 @@ export class BaseStore {
 }
 
 export const getOrCreateStore = (storeKeyName, Store) => initialState => {
-  // Convert Map to JSON string for client
+  // Convert Map to JSON
   if (initialState) {
     for (const itemState in initialState) {
       try {
         const dataMap = initialState[itemState];
+
         if (dataMap.toJS() instanceof Map) {
           initialState[itemState] = mapToJson(dataMap);
         }
@@ -31,12 +32,12 @@ export const getOrCreateStore = (storeKeyName, Store) => initialState => {
     }
   }
 
-  // Always make a new store if server, otherwise state is shared between requests
+  // Always make a new store if server
   if (isServer) {
     return new Store(initialState);
   }
 
-  // Create store if unavailable on the client and set it on the window object
+  // Create store if unavailable on the client
   if (!__NEXT_MOBX_STORE__.has(storeKeyName)) {
     __NEXT_MOBX_STORE__.set(storeKeyName, new Store(initialState));
   }

@@ -1,6 +1,6 @@
 export const isServer = !process.browser;
 
-// getCounterStore=> counterStore
+// getCounterStore => counterStore
 export const getKeyNameStore = fnName =>
   fnName.replace(/^get(.)/, (match, p1) => p1.toLowerCase());
 

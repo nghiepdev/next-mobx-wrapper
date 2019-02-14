@@ -38,6 +38,7 @@ export default (getStores = {}) => App => {
 
     render() {
       const {initialMobxState, ...props} = this.props;
+
       return <App {...props} store={{...this.store}} />;
     }
   };

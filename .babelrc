@@ -1,5 +1,18 @@
 {
-  "presets": ["next/babel"],
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-env": {
+          "useBuiltIns": "usage"
+        },
+        "transform-runtime": {
+          "corejs": false,
+          "helpers": false
+        }
+      }
+    ]
+  ],
   "plugins": [
     ["@babel/plugin-proposal-decorators", {"legacy": true}],
     ["@babel/plugin-proposal-class-properties", {"loose": true}]
