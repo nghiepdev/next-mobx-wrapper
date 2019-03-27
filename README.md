@@ -11,7 +11,7 @@
 
 ## Features
 
-- Simple API for easy steps to set up
+- Simple and quick setup
 - Multiple stores injection
 - Works fine with [Observable Maps](https://mobx.js.org/refguide/map.html)
 
@@ -23,7 +23,7 @@ $ yarn add next-mobx-wrapper
 
 ## Usage
 
-### Step 1: Wrap `withMobx` HOC into `_app.js`
+### Step 1: Wrap `withMobx` into `_app.js`
 
 ```js
 // pages/_app.js
@@ -176,6 +176,28 @@ class UserInfo extends React.Component {
 </SampleThing>
 ```
 
+### Note: `Next.js 8` you need more
+
+```json
+//.babelrc
+
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "preset-env": {
+          "useBuiltIns": "usage"
+        },
+        "transform-runtime": {
+          "corejs": false
+        }
+      }
+    ]
+  ]
+}
+```
+
 ## API
 
 ```js
@@ -184,4 +206,4 @@ import {withMobx, BaseStore, getOrCreateStore} from 'next-mobx-wrapper';
 
 ## License
 
-MIT © [Nghiep](https://nghiepit.pro)
+MIT © [Nghiep](https://nghiepit.dev)

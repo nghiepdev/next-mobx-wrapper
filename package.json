@@ -14,14 +14,13 @@
     "build": "npm run clean && npm run babel",
     "prepublishOnly": "npm run build"
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-class-properties": "^7.3.0",
-    "@babel/plugin-proposal-decorators": "^7.3.0",
-    "next": "^8.0.1",
-    "react": "^16.8.1",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
+    "next": "^8.0.3",
+    "react": "^16.8.5",
     "rimraf": "^2.6.3"
   },
   "peerDependencies": {
@@ -38,6 +37,6 @@
     "url": "https://github.com/nghiepit/next-mobx-wrapper/issues"
   },
   "homepage": "https://github.com/nghiepit/next-mobx-wrapper",
-  "author": "Nghiep <me@nghiepit.pro>",
+  "author": "Nghiep <me@nghiepit.dev>",
   "license": "MIT"
 }
