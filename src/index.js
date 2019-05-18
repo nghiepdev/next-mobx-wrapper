@@ -1,5 +1,6 @@
-export {default as withMobx} from './with-mobx';
+import {action} from 'mobx';
 import {isServer, mapToJson, jsonToMap} from './utils';
+export {default as withMobx} from './with-mobx';
 
 const __NEXT_MOBX_STORE__ = new Map();
 
@@ -11,6 +12,7 @@ export class BaseStore {
     }
   }
 
+  @action
   update = (data = {}) => {
     for (const prop in data) {
       this[prop] = data[prop];

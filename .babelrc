@@ -16,18 +16,5 @@
   "plugins": [
     ["@babel/plugin-proposal-decorators", {"legacy": true}],
     ["@babel/plugin-proposal-class-properties", {"loose": true}]
-  ],
-  "env": {
-    "test": {
-      "presets": [
-        [
-          "@babel/env",
-          {
-            "modules": "commonjs"
-          }
-        ],
-        "next/babel"
-      ]
-    }
-  }
+  ]
 }

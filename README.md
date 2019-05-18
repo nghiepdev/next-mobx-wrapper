@@ -1,7 +1,7 @@
 # next-mobx-wrapper
 
 [![NPM version](https://img.shields.io/npm/v/next-mobx-wrapper.svg)](https://www.npmjs.com/package/next-mobx-wrapper)
-[![NPM monthly download](https://img.shields.io/npm/dm/next-mobx-wrapper.svg)](https://www.npmjs.com/package/next-mobx-wrapper)
+[![NPM monthly download](https://img.shields.io/npm/dy/next-mobx-wrapper.svg)](https://www.npmjs.com/package/next-mobx-wrapper)
 
 > Mobx wrapper for Next.js
 
@@ -11,8 +11,7 @@
 
 ## Features
 
-- Simple and quick setup
-- Multiple stores injection
+- Simply and quickly setup
 - Works fine with [Observable Maps](https://mobx.js.org/refguide/map.html)
 
 ## Installation
@@ -28,7 +27,6 @@ $ yarn add next-mobx-wrapper
 ```js
 // pages/_app.js
 
-import ErrorPage from 'next/error';
 import {withMobx} from 'next-mobx-wrapper';
 import {configure} from 'mobx';
 import {Provider, useStaticRendering} from 'mobx-react';
@@ -53,11 +51,6 @@ class MyApp extends App {
 
   render() {
     const {Component, pageProps, store} = this.props;
-    const {statusCode} = pageProps;
-
-    if (statusCode && statusCode >= 400) {
-      return <ErrorPage statusCode={statusCode} />;
-    }
 
     return (
       <Container>
@@ -113,7 +106,6 @@ export const getUserStore = getOrCreateStore('userStore', Store);
 
 ```js
 // stores/index.js
-// Just only simple
 
 export {getCounterStore} from './counter';
 export {getUserStore} from './user';
@@ -133,12 +125,6 @@ class User extends React.Component {
     await userStore.fetchUser(id);
 
     const user = userStore.getUserById(id);
-
-    if (!user) {
-      return {
-        statusCode: 404,
-      };
-    }
 
     return {
       user,
@@ -176,7 +162,7 @@ class UserInfo extends React.Component {
 </SampleThing>
 ```
 
-### Note: `Next.js 8` you need more
+### **Note:** `Next.js 8` you need add more
 
 ```json
 //.babelrc
@@ -186,9 +172,6 @@ class UserInfo extends React.Component {
     [
       "next/babel",
       {
-        "preset-env": {
-          "useBuiltIns": "usage"
-        },
         "transform-runtime": {
           "corejs": false
         }
