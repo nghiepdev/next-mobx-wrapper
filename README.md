@@ -9,11 +9,6 @@
 
 ## Example: [examples/with-mobx-wrapper](https://github.com/nghiepit/next.js/tree/canary/examples/with-mobx-wrapper)
 
-## Features
-
-- Simply and quickly setup
-- Works fine with [Observable Maps](https://mobx.js.org/refguide/map.html)
-
 ## Installation
 
 ```sh
@@ -39,16 +34,6 @@ configure({enforceActions: 'observed'});
 useStaticRendering(isServer); // NOT `true` value
 
 class MyApp extends App {
-  static async getInitialProps({Component, ctx}) {
-    let pageProps = {};
-
-    if (typeof Component.getInitialProps === 'function') {
-      pageProps = await Component.getInitialProps(ctx);
-    }
-
-    return {pageProps};
-  }
-
   render() {
     const {Component, pageProps, store} = this.props;
 
@@ -84,10 +69,15 @@ class Store extends BaseStore {
       return;
     }
 
-    const userPromise = yield fetch(`https://api.domain.com/users/${id}`).then(
-      response => response.json(),
-    );
-    this.userRegistry.set(id, userPromise.data.user);
+    try {
+      const {data} = yield fetch(`https://api.domain.com/users/${id}`).then(
+        response => response.json(),
+      );
+
+      this.userRegistry.set(id, data);
+    } catch (error) {
+      throw error;
+    }
   });
 
   getUserById = id => {
@@ -145,7 +135,7 @@ export default User;
 ```js
 // components/UserInfo.jsx
 
-import {inject, observer} from 'mobx-react';
+import {inject} from 'mobx-react';
 
 @inject(({userStore: {getUserById}}, props) => ({
   user: getUserById(props.id),
@@ -162,7 +152,28 @@ class UserInfo extends React.Component {
 </SampleThing>
 ```
 
-### **Note:** `Next.js 8` you need add more
+- Or with Hooks
+
+```js
+// components/UserInfo.jsx
+
+import React, {useMemo, useContext} from 'react';
+import {MobXProviderContext} from 'mobx-react';
+
+const UserInfo = ({id}) => {
+  const {
+    userStore: {getUserById},
+  } = useContext(MobXProviderContext);
+
+  const user = useMemo(() => getUserById(id), [id]);
+
+  return <div>Username: {user.name}</div>;
+};
+
+export default UserInfo;
+```
+
+### **Note:** `Next.js 8` you need add more, if you want to use [Observable Maps](https://mobx.js.org/refguide/map.html)
 
 ```json
 //.babelrc
