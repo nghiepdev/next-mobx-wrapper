@@ -3,9 +3,6 @@
     [
       "next/babel",
       {
-        "preset-env": {
-          "useBuiltIns": "usage"
-        },
         "transform-runtime": {
           "corejs": false,
           "helpers": false
